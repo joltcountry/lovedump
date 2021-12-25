@@ -1,5 +1,5 @@
 require 'coolwriter'
-
+require 'words'
 lasttext = 0
 
 text = {
@@ -15,11 +15,10 @@ function love.load()
 end
 
 function love.draw()
-    coolwriter.draw()
+    words.print('This is a sentence with a bunch of words123 in it.  However, if the sentence gets too long, it should wrap.')
 end
 
 function love.update(dt)
-    coolwriter.update(dt)
 end
 
 function love.keypressed(key)
@@ -30,7 +29,7 @@ function love.keypressed(key)
             coolwriter.clear()
             lasttext = 0
         else
-            coolwriter.print(text[lasttext], 10, lasttext * vera:getHeight('1') * 2, { shake = true, color = 'green' });
+            coolwriter.print(text[lasttext], 10, lasttext * vera:getHeight('1') * 2, {  color = 'green' });
         end
     end
 end
