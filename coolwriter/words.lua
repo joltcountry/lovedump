@@ -5,17 +5,25 @@ love.graphics.setFont(font)
 x = 60
 y = 90
 margin = 10
+tabsize = 16
 math.randomseed(os.time())
 words = {
     print = function(s)
-        y = y + math.random(11) - 6
-        x = x + math.random(11) - 6
         line = 0
-        love.graphics.setColor(.7,.7,1)
+        love.graphics.setColor(.1,.1,1)
         love.graphics.rectangle('line', x, y, width, height)
         str = ""
+        s = s:gsub('\n', ' :newline: ')
+        s = s:gsub('\t', ' :tab: ')
         for word in s:gmatch('%S+') do
-            if font:getWidth(str .. ' ' .. word) > width - margin * 2 then
+            if (word == ':newline:') then
+                love.graphics.setColor(1,1,1)
+                love.graphics.print(str, x + margin, y + line * font:getHeight('X') + margin)
+                line = line + 1
+                str = ""
+            elseif word == ':tab:' then
+                str = str .. string.rep(" ", tabsize)
+            elseif font:getWidth(str .. ' ' .. word) > width - margin * 2 then
                 love.graphics.setColor(1,1,1)
                 love.graphics.print(str, x + margin, y + line * font:getHeight('X') + margin)
                 str = word
@@ -25,6 +33,9 @@ words = {
                     str = str .. ' '
                 end
                 str = str .. word
+                if str:sub(#str, #str) == '.' then
+                    str = str .. ' '
+                end
             end
         end
         love.graphics.print(str, x + margin, y + line * font:getHeight('X') + margin)
